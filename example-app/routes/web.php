@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InterFaceController;
 use App\Http\Controllers\Admin\OrderController;
@@ -11,8 +12,12 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthClientController;
 use App\Http\Controllers\Auth\SocialController;
+use App\Http\Controllers\Client\AboutClientController;
+use App\Http\Controllers\Client\BlogClientController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
+use App\Http\Controllers\Client\ContactClientController;
+use App\Http\Controllers\Client\CouponClientController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ShopController;
 use App\Http\Controllers\PaymentController;
@@ -31,6 +36,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/cua-hang', [ShopController::class, 'shop'])->name('cua-hang');
+Route::get('/gioi-thieu', [AboutClientController::class, 'index'])->name('gioi-thieu');
+Route::get('/lien-he', [ContactClientController::class, 'index'])->name('lien-he');
+Route::get('/bai-viet', [BlogClientController::class, 'index'])->name('bai-viet');
+
 Route::get('/chi-tiet-san-pham/{slug}/{id}', [ShopController::class, 'productDetail'])->name('chi-tiet-san-pham');
 Route::get('/vnPayCheck', [CheckoutController::class, 'vnPayCheck'])->name('vnPayCheck');
 
@@ -42,8 +51,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/mua-hang', [CheckoutController::class, 'index'])->name('mua-hang');
     Route::post('/dat-hang', [CheckoutController::class, 'checkout'])->name('dat-hang');
     Route::get('/don-hang', [CheckoutController::class, 'list'])->name('don-hang');
-    Route::get('/{id}/cancel', [CheckoutController::class, 'cancel'])->name('order.cancel');
+    Route::post('/order/cancel/{id}', [CheckoutController::class, 'cancel'])->name('order.cancel.client');
     Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment'])->name('vnpay_payment');
+    Route::post('/check-coupon', [CouponClientController::class, 'check'])->name('client.coupon.check');
+    Route::post('/clear-coupon-session',[CouponClientController::class, 'clearCouponSession'])->name('clear-coupon-session');
+
 });
 
 
@@ -57,7 +69,8 @@ Route::get('/forgotPassword', [AuthClientController::class, 'forgotPassword'])->
 Route::post('/saveForgotPassword', [AuthClientController::class, 'saveForgotPassword'])->name('saveForgot.client');
 Route::get('/google', [SocialController::class, 'redirectToGoogle']);
 Route::get('/google/callback', [SocialController::class, 'handleGoogleCallback']);
-
+Route::get('/facebook', [SocialController::class, 'facebookRedirect']);
+Route::get('/facebook/callback', [SocialController::class, 'loginWithFacebook']);
 
 Route::get('admin/login', [AuthAdminController::class, 'index'])->name('login.admin');
 Route::post('admin/saveLogin', [AuthAdminController::class, 'login'])->name('saveLogin.admin');
@@ -152,11 +165,25 @@ Route::middleware('CheckAdmin')->group(function () {
             });
         });
 
+        // đơn hàng
         Route::prefix('order')->group(function () {
             Route::get('/', [OrderController::class, 'index'])->name('list.order');
             Route::get('/{id}/detail', [OrderController::class, 'detail'])->name('order.detail');
             Route::get('/{id}/confirm', [OrderController::class, 'confirm'])->name('order.confirm');
-            Route::get('/{id}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
+            Route::post('/{id}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
+            Route::get('/{id}/delivered', [OrderController::class, 'delivered'])->name('order.delivered');
+            Route::get('/{id}/delivering', [OrderController::class, 'delivering'])->name('order.delivering');
+        });
+
+        //mã giảmg giá
+        Route::prefix('coupons')->group(function () {
+            Route::get('/', [CouponController::class, 'index'])->name('list.coupon');
+            Route::match(['GET', 'POST'], '/add', [CouponController::class, 'add'])->name('add.coupon');
+            Route::match(['GET', 'POST'], '/edit/{id}', [CouponController::class, 'edit'])->name('edit.coupon');
+            Route::get('/destroy/{id}', [CouponController::class, 'destroy'])->name('destroy.coupon');
+            Route::post('/deleteAll', [CouponController::class, 'deleteAll'])->name('deleteAll.coupon');
+
+
         });
     });
 });

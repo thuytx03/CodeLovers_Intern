@@ -139,6 +139,7 @@ class ProductController extends Controller
         //Xử lý giảm giá
         if($request->discount_price!=NULL && $request->percent==NULL){
             $product->discount_price = $request->discount_price;
+            $product->percent = NULL;
         }else if($request->percent!=NULL && $request->discount_price==NULL){
             $product->percent = $request->percent;
             $percent=$request->selling_price*($request->percent/100);

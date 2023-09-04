@@ -20,39 +20,33 @@
                 <div class="leftbar p-r-20 p-r-0-sm">
                     <!--  -->
                     <h4 class="m-text14 p-b-7">
-                        Categories
+                        Danh mục sản phẩm
                     </h4>
 
                     <ul class="p-b-54">
                         <li class="p-t-4">
-                            <a href="#" class="s-text13 active1">
-                                All
+                            <a href="{{ route('cua-hang') }}"
+                                class="s-text13 {{ request()->routeIs('cua-hang') ? 'active1' : '' }}">
+                                Tất cả
                             </a>
                         </li>
+                        @foreach ($categories->where('parent_id', 0) as $parent)
+                            <li class="p-t-4">
+                                <a href="{{ route('cua-hang', ['category' => $parent->id]) }}"
+                                    class="s-text13 {{ request()->routeIs('cua-hang', ['category' => $parent->id]) ? 'active1' : '' }}">
+                                    {{ $parent->name }}
+                                </a>
+                            </li>
+                            @foreach ($categories->where('parent_id', $parent->id) as $child)
+                                <li class="p-t-4">
+                                    <a href="{{ route('cua-hang', ['category' => $child->id]) }}" class="s-text13 ">
+                                        - {{ $child->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endforeach
 
-                        <li class="p-t-4">
-                            <a href="#" class="s-text13">
-                                Women
-                            </a>
-                        </li>
 
-                        <li class="p-t-4">
-                            <a href="#" class="s-text13">
-                                Men
-                            </a>
-                        </li>
-
-                        <li class="p-t-4">
-                            <a href="#" class="s-text13">
-                                Kids
-                            </a>
-                        </li>
-
-                        <li class="p-t-4">
-                            <a href="#" class="s-text13">
-                                Accesories
-                            </a>
-                        </li>
                     </ul>
 
                     <!--  -->
@@ -181,7 +175,8 @@
                         <div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
                             <!-- Block2 -->
                             <div class="block2">
-                                <div class="block2-img wrap-pic-w of-hidden pos-relative {{ $value->features==1 ? 'block2-labelnew' : ($value->features==2 ? 'block2-labelsale' :'') }}">
+                                <div
+                                    class="block2-img wrap-pic-w of-hidden pos-relative {{ $value->features == 1 ? 'block2-labelnew' : ($value->features == 2 ? 'block2-labelsale' : '') }}">
                                     <img src="{{ Storage::url($value->image) }}" alt="IMG-PRODUCT">
 
                                     <div class="block2-overlay trans-0-4">
@@ -192,7 +187,8 @@
                                         <input type="hidden" name="product_id" value="{{ $value->id }}">
                                         <div class="block2-btn-addcart w-size1 trans-0-4">
                                             <!-- Button -->
-                                            <a href="{{ route('chi-tiet-san-pham', ['slug' => $value->slug, 'id' => $value->id]) }}" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                            <a href="{{ route('chi-tiet-san-pham', ['slug' => $value->slug, 'id' => $value->id]) }}"
+                                                class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
                                                 Xem chi tiết
                                             </a>
                                         </div>
@@ -234,4 +230,4 @@
         </div>
     </div>
 </section>
-@include('client.layouts.footer');
+@include('client.layouts.footer')

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Logo;
+use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -21,27 +22,33 @@ class CartController extends Controller
         } else {
             $countCart = NULL;
         }
+        $totalPrice = 0;
+        foreach ($carts as $cart) {
+            $totalPrice += $cart->total;
+        }
         return view('client.carts.cart', [
             'title' => 'Giỏ hàng',
             'carts' => $carts,
             'countCart' => $countCart,
             'logo' => Logo::find(1),
+            'totalPrice' => $totalPrice
         ]);
     }
     public function addToCart(Request $request)
     {
-
-        if ($request->size_id == '') {
-            toastr()->warning('Vui lòng nhập kích thước');
-            return redirect()->back();
-        } else if ($request->color_id == '') {
-            toastr()->warning('Vui lòng nhập màu sắc');
-            return redirect()->back();
-        }
         $user = auth()->user();
         $productId = $request->product_id;
+        // if ($request->size_id == '') {
+        //     toastr()->warning('Vui lòng nhập kích thước');
+        //     return redirect()->back();
+        // } else if ($request->color_id == '') {
+        //     toastr()->warning('Vui lòng nhập màu sắc');
+        //     return redirect()->back();
+        // }
+
         $sizeId = $request->size_id;
         $colorId = $request->color_id;
+
         $quantity = $request->quantity;
 
         // Kiểm tra sản phẩm đã có trong giỏ hàng chưa

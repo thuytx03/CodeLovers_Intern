@@ -49,7 +49,7 @@
                     </div>
                     <div class=" of-hidden size15 m-b-10 ">
                         <!-- Button -->
-                        <a class="flex-c-m size2  hov1 m-text3 trans-0-4" style="background: #1877F2" href="">
+                        <a class="flex-c-m size2  hov1 m-text3 trans-0-4" style="background: #1877F2" href="{{ url('/facebook') }}">
                             Đăng nhập bằng Facebook
                         </a>
                     </div>

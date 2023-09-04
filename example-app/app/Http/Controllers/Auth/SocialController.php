@@ -36,7 +36,7 @@ class SocialController extends Controller
                     'email' => $user->email,
                     'role_id' => 3,
                     'google_id' => $user->id,
-                    'password' => encrypt('123456dummy'),
+                    'password' => encrypt('xuanthuy'),
                     'status' => 1,
                 ]);
 
@@ -47,6 +47,39 @@ class SocialController extends Controller
             }
         } catch (Exception $e) {
             dd($e->getMessage());
+        }
+    }
+    public function facebookRedirect()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function loginWithFacebook()
+    {
+        try {
+
+            $user = Socialite::driver('facebook')->user();
+            $isUser = User::where('facebook_id', $user->id)->first();
+
+            if($isUser){
+                Auth::login($isUser);
+                return redirect('/');
+            }else{
+                $createUser = User::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role_id' => 3,
+                    'facebook_id' => $user->id,
+                    'password' => encrypt('xuanthuy'),
+                    'status' => 1,
+                ]);
+
+                Auth::login($createUser);
+                return redirect('/');
+            }
+
+        } catch (Exception $exception) {
+            dd($exception->getMessage());
         }
     }
 }

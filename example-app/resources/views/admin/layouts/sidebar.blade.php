@@ -140,6 +140,27 @@
 
             </ul>
         </li>
+        {{-- Mã giảm giá  --}}
+
+        <li class="menu-item">
+            <a href="" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bxs-coupon"></i>
+                <div data-i18n="Misc">Mã giảm giá</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('add.coupon') }}" class="menu-link">
+                        <div data-i18n="Error">Thêm mới</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('list.coupon') }}" class="menu-link">
+                        <div data-i18n="Error">Danh sách</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
         {{-- Đơn hàng  --}}
 
         <li class="menu-item">

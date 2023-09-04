@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('payment');
             $table->string('status');
             $table->string('note')->nullable();
+            $table->string('cancel_reason')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

@@ -39,8 +39,8 @@
 
                                 </td>
                                 <td class="column-2">{{ $value->product->name }}</td>
-                                <td class="column-3">{{ $value->color->name }}</td>
-                                <td class="column-4">{{ $value->size->name }}</td>
+                                <td class="column-3">{{ $value->color->name?? "Không" }}</td>
+                                <td class="column-4">{{ $value->size->name ?? "Không"}}</td>
                                 <td class="column-5">
 
                                     @if ($value->product->discount_price != null)
@@ -125,9 +125,9 @@
                     {{ $countCart }}
                 </span>
             </div>
-            @php
+            {{-- @php
                 $totalPrice = 0;
-            @endphp
+            @endphp --}}
             @foreach ($carts as $value)
                 <!--  -->
                 <div class="flex-w flex-sb bo10 p-t-15 p-b-20">
@@ -144,9 +144,9 @@
                 </div>
 
                 <!--  -->
-                @php
+                {{-- @php
                     $totalPrice += $value->total;
-                @endphp
+                @endphp --}}
             @endforeach
 
             <div class="flex-w flex-sb-m p-t-26 p-b-30">

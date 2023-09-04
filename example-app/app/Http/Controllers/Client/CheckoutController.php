@@ -12,12 +12,15 @@ use App\Models\Product;
 use App\Notifications\CheckOut\CheckOutMail;
 use App\Utilities\VNPay;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
+        // Session::forget('coupon');
+
         $user = auth()->user();
         $carts = Cart::where('user_id', $user->id)->get();
         if ($user) {
@@ -25,11 +28,17 @@ class CheckoutController extends Controller
         } else {
             $countCart = NULL;
         }
+        $totalPrice = 0;
+        foreach ($carts as $cart) {
+            $totalPrice += $cart->total;
+        }
         return view('client.checkout.index', [
             'title' => 'Mua hàng',
             'carts' => $carts,
             'countCart' => $countCart,
             'logo' => Logo::find(1),
+            'totalPrice' => $totalPrice
+
         ]);
     }
     public function checkout(CheckOutRequest $request)
@@ -37,6 +46,7 @@ class CheckoutController extends Controller
 
         $user = auth()->user();
         $carts = Cart::where('user_id', $user->id)->get();
+
         $order = new Order();
         $order->name = $request->input('name');
         $order->email = $request->input('email');
@@ -71,6 +81,9 @@ class CheckoutController extends Controller
             // Xóa sản phẩm trong giỏ hàng của người dùng
             // Cart::where('user_id', $user->id)->delete();
 
+            // Xoá session giảm giá sau khi đặt hàng thành công
+            Session::forget('coupon');
+
             $order->notify(new CheckOutMail());
             toastr()->success('Đặt hàng thành công');
             return redirect()->back();
@@ -96,6 +109,10 @@ class CheckoutController extends Controller
         if ($vnp_ResponseCode != NULL) {
             if ($vnp_ResponseCode == '00') {
                 // Cart::where('user_id', $user->id)->delete();
+
+                // Xoá session giảm giá sau khi đặt hàng thành công
+                Session::forget('coupon');
+
                 $order->status = 'Chờ lấy hàng';
                 $order->save();
                 $order->notify(new CheckOutMail());
@@ -116,22 +133,46 @@ class CheckoutController extends Controller
         if ($user) {
             $countCart = Cart::where('user_id', $user->id)->count();
         } else {
-            $countCart = NULL;
+            $countCart = null;
         }
-        $order = Order::where('user_id', $user->id)->get();
+        $orders = Order::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(5); // Số đơn hàng hiển thị trên mỗi trang, trong ví dụ này là 10
+        $orderQuantities = [];
+
+        foreach ($orders as $order) {
+            $totalQuantity = Order_Detail::where('order_id', $order->id)->sum('quantity');
+            $orderQuantities[$order->id] = $totalQuantity;
+        }
+
         return view('client.checkout.list', [
             'title' => 'Đơn hàng',
-            'order' => $order,
+            'order' => $orders,
             'logo' => Logo::find(1),
             'countCart' => $countCart,
-
+            'orderQuantities' => $orderQuantities
         ]);
     }
-    public function cancel($id)
+
+    public function cancel(Request $request, $id)
     {
         $order = Order::find($id);
+        $cancelReason = $request->input('cancel_reason');
+
+        // Lưu lý do huỷ đơn hàng vào cơ sở dữ liệu (ví dụ: trong trường hợp có cột 'cancel_reason' trong bảng 'orders')
+        $order->cancel_reason = $cancelReason;
         $order->status = 'Đã huỷ';
         $order->save();
+
+        // Cập nhật lại số lượng sản phẩm đã mua
+        foreach ($order->order_details as $orderDetail) {
+            $product = Product::find($orderDetail->product_id);
+            $product->quantity += $orderDetail->quantity;
+            $product->save();
+        }
+
+        // Thực hiện các hành động khác sau khi huỷ đơn hàng
+        toastr()->success('Đơn hàng đã được huỷ thành công!');
         return redirect()->back();
     }
 }

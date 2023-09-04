@@ -59,16 +59,16 @@
                         <li class="{{ request()->routeIs('cua-hang')?'sale-noti':'' }}">
                             <a href="{{ route('cua-hang') }}">Cửa hàng</a>
                         </li>
-                        <li>
-                            <a href="blog.html">Bài viết</a>
+                        <li class="{{ request()->routeIs('bai-viet')?'sale-noti':'' }}">
+                            <a href="{{ route('bai-viet') }}">Bài viết</a>
                         </li>
 
-                        <li>
-                            <a href="about.html">Giới thiệu</a>
+                        <li class="{{ request()->routeIs('gioi-thieu')?'sale-noti':'' }}">
+                            <a href="{{ route('gioi-thieu') }}">Giới thiệu</a>
                         </li>
 
-                        <li>
-                            <a href="contact.html">Liên hệ</a>
+                        <li class="{{ request()->routeIs('lien-he')?'sale-noti':'' }}">
+                            <a href="{{ route('lien-he') }}">Liên hệ</a>
                         </li>
                     </ul>
                 </nav>
