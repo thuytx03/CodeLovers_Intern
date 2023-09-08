@@ -50,7 +50,7 @@
                                 </td>
                                 <td>{{ $value->code }}</td>
                                 <td>{{ $value->type==1? 'Giảm theo %' : 'Giảm theo giá' }}</td>
-                                <td>{{ $value->type==1? $value->value*100  : $value->value }}</td>
+                                <td>{{ $value->value }}</td>
                                 <td>{{ $value->quantity }}</td>
                                 @if($value->min_order_amount == "" && $value->max_order_amount== "")
                                 <td> Tất cả</td>
@@ -71,7 +71,7 @@
                                     <a href="/admin/coupons/destroy/{{ $value->id }}"
                                         onclick="event.preventDefault(); showDeleteConfirm('{{ $value->id }}','{{ $couponUrl }}');"
                                         class="btn btn-danger"><i class='bx bx-trash'></i></a>
-                                    <a href="/admin/product/edit/{{ $value->id }}" class="btn btn-primary"><i
+                                    <a href="/admin/coupons/edit/{{ $value->id }}" class="btn btn-primary"><i
                                             class='bx bx-edit'></i></a>
                                 </td>
                             </tr>

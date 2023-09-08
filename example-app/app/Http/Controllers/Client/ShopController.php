@@ -26,9 +26,7 @@ class ShopController extends Controller
         }
         $categories = Category::orderBy('parent_id', 'asc')->get();
 
-
-        $selectedCategoryId = $request->input('category');
-
+        $selectedCategoryId = $request->input('category');  
         $productQuery = Product::query();
         if ($selectedCategoryId) {
             $productQuery->whereHas('categories', function ($query) use ($selectedCategoryId) {
@@ -86,5 +84,14 @@ class ShopController extends Controller
             'relatedProducts'=>$relatedProducts
 
         ]);
+    }
+    public function index()
+    {
+        return view('welcome');
+    }
+    public function getResult(Request $request){
+        $query = $request->get('query');
+        $filterResult = Product::where('name', 'LIKE', '%'. $query. '%')->get();
+        return response()->json($filterResult);
     }
 }

@@ -245,7 +245,7 @@
  <script type="text/javascript" src="{{ asset('client/vendor/noui/nouislider.min.js') }}"></script>
  <script type="text/javascript">
      /*[ No ui ]
-  	    ===========================================================*/
+    	    ===========================================================*/
      var filterBar = document.getElementById('filter-bar');
 
      noUiSlider.create(filterBar, {
@@ -270,7 +270,7 @@
  <!--===============================================================================================-->
  <script src="{{ asset('client/js/main.js') }}"></script>
  <script>
-     window.addEventListener('beforeunload', function () {
+     window.addEventListener('beforeunload', function() {
          // Gửi request về server để xoá session giảm giá
          fetch("{{ route('clear-coupon-session') }}", {
              method: "POST",
@@ -280,6 +280,8 @@
          });
      });
  </script>
+
+
  </body>
 
  </html>

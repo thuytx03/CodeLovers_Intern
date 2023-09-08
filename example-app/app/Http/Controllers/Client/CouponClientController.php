@@ -49,22 +49,22 @@ class CouponClientController extends Controller
 
         if ($coupon->type == 1 && $coupon->min_order_amount == "" && $coupon->max_order_amount == "") {
             // Giảm tất cả hoá đơn theo %
-            $discount = $totalPrice * $coupon->value;
+            $discount = $totalPrice * ($coupon->value/100);
             $totalCoupon = $totalPrice - $discount;
         } elseif (
             $coupon->type == 1 && $coupon->min_order_amount <= $totalPrice && $coupon->max_order_amount >= $totalPrice
             && $coupon->min_order_amount != "" && $coupon->max_order_amount != ""
         ) {
             // Giảm theo % đối với khoảng đơn hàng cụ thể
-            $discount = $totalPrice * $coupon->value;
+            $discount = $totalPrice * ($coupon->value/100);
             $totalCoupon = $totalPrice - $discount;
         } elseif ($coupon->type == 1 && $coupon->min_order_amount <= $totalPrice && $coupon->max_order_amount == "") {
             // Giảm theo % đối với đơn hàng trên mức tối thiểu
-            $discount = $totalPrice * $coupon->value;
+            $discount = $totalPrice * ($coupon->value/100);
             $totalCoupon = $totalPrice - $discount;
         } elseif ($coupon->type == 1 && $coupon->min_order_amount == "" && $coupon->max_order_amount >= $totalPrice) {
             // Giảm theo % đối với đơn hàng trên mức tối thiểu
-            $discount = $totalPrice * $coupon->value;
+            $discount = $totalPrice * ($coupon->value/100);
             $totalCoupon = $totalPrice - $discount;
         } elseif ($coupon->type == 2 && $coupon->min_order_amount == "" && $coupon->max_order_amount == "") {
             // Giảm tất cả hoá đơn theo giá

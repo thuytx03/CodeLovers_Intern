@@ -71,6 +71,33 @@
             <span class="menu-header-text">Pages</span>
         </li>
 
+        {{-- Bài viết  --}}
+        <li class="menu-item">
+            <a href="{{ route('list.blogs') }}" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons bx bxl-blogger'></i>
+                <div data-i18n="Misc">Bài viết</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('add.blogs') }}" class="menu-link">
+                        <div data-i18n="Error">Thêm mới</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('list.blogs') }}" class="menu-link">
+                        <div data-i18n="Under Maintenance">Danh sách</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('list.types') }}" class="menu-link">
+                        <div data-i18n="Under Maintenance">Danh mục</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        {{-- End bài viết  --}}
+
         {{-- Product  --}}
         <li class="menu-item">
             <a href="{{ route('list.product') }}" class="menu-link menu-toggle">
@@ -165,7 +192,7 @@
 
         <li class="menu-item">
             <a href="" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-box"></i>
+                <i class="menu-icon tf-icons bx bx-cart"></i>
                 <div data-i18n="Misc">Đơn hàng</div>
             </a>
             <ul class="menu-sub">
@@ -178,6 +205,21 @@
 
             </ul>
         </li>
+         {{-- Liên hệ tự vấn  --}}
+         <li class="menu-item">
+            <a href="#" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bxs-contact"></i>
+                <div data-i18n="Misc">Liên hệ tư vấn</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('list.contact') }}" class="menu-link">
+                        <div data-i18n="Error">Danh sách</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        {{-- Liên hệ tự vấn  --}}
 
         {{-- Users  --}}
         @if(Auth::user()->role_id==1)

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InterFaceController;
@@ -8,6 +10,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductAttributeController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthClientController;
@@ -37,11 +40,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/cua-hang', [ShopController::class, 'shop'])->name('cua-hang');
 Route::get('/gioi-thieu', [AboutClientController::class, 'index'])->name('gioi-thieu');
-Route::get('/lien-he', [ContactClientController::class, 'index'])->name('lien-he');
+Route::match(['GET','POST'],'/lien-he', [ContactClientController::class, 'index'])->name('lien-he');
 Route::get('/bai-viet', [BlogClientController::class, 'index'])->name('bai-viet');
+Route::get('/chi-tiet-bai-viet/{slug}/{id}', [BlogClientController::class,'detail'])->name('chitietbaiviet');
 
 Route::get('/chi-tiet-san-pham/{slug}/{id}', [ShopController::class, 'productDetail'])->name('chi-tiet-san-pham');
 Route::get('/vnPayCheck', [CheckoutController::class, 'vnPayCheck'])->name('vnPayCheck');
+
+Route::get('/home', [ShopController::class, 'index']);
+Route::get('/get-result', [ShopController::class, 'getResult'])->name('get-result');
 
 Route::middleware('auth')->group(function () {
     Route::post('/them-gio-hang', [CartController::class, 'addToCart'])->name('them-gio-hang');
@@ -182,8 +189,41 @@ Route::middleware('CheckAdmin')->group(function () {
             Route::match(['GET', 'POST'], '/edit/{id}', [CouponController::class, 'edit'])->name('edit.coupon');
             Route::get('/destroy/{id}', [CouponController::class, 'destroy'])->name('destroy.coupon');
             Route::post('/deleteAll', [CouponController::class, 'deleteAll'])->name('deleteAll.coupon');
+        });
 
+        //liên hệ tư vấn
+        Route::prefix('contacts')->group(function () {
+            Route::get('/', [ContactController::class, 'index'])->name('list.contact');
+            Route::get('/confirm/{id}', [ContactController::class, 'confirm'])->name('confirm.contact');
 
+        });
+
+        // danh mục bài viết
+        Route::prefix('types')->group(function () {
+            Route::get('/', [TypeController::class, 'index'])->name('list.types');
+            Route::get('/add', [TypeController::class, 'create'])->name('add.types');
+            Route::post('/saveAdd', [TypeController::class, 'store'])->name('saveAdd.types');
+            Route::get('/destroy/{id}', [TypeController::class, 'destroy'])->name('destroy.types');
+            Route::get('/edit/{id}', [TypeController::class, 'edit'])->name('edit.types');
+            Route::put('/update/{id}', [TypeController::class, 'update'])->name('update.types');
+            Route::get('/trash', [TypeController::class, 'trash'])->name('trash.types');
+            Route::post('/restore', [TypeController::class, 'restore'])->name('restore.types');
+            Route::get('/permanentlyDelete/{id}', [TypeController::class, 'permanentlyDelete'])->name('permanentlyDelete.types');
+            Route::post('/deleteAll', [TypeController::class, 'deleteAll'])->name('deleteAll.types');
+        });
+
+        //bài viết
+        Route::prefix('blogs')->group(function () {
+            Route::get('/', [BlogController::class, 'index'])->name('list.blogs');
+            Route::get('/add', [BlogController::class, 'create'])->name('add.blogs');
+            Route::post('/saveAdd', [BlogController::class, 'store'])->name('saveAdd.blogs');
+            Route::get('/edit/{id}', [BlogController::class, 'edit'])->name('edit.blogs');
+            Route::put('/update/{id}', [BlogController::class, 'update'])->name('update.blogs');
+            Route::get('/destroy/{id}', [BlogController::class, 'destroy'])->name('destroy.blogs');
+            Route::get('/trash', [BlogController::class, 'trash'])->name('trash.blogs');
+            Route::post('/restore', [BlogController::class, 'restore'])->name('restore.blogs');
+            Route::get('/permanentlyDelete/{id}', [BlogController::class, 'permanentlyDelete'])->name('permanentlyDelete.blogs');
+            Route::post('/deleteAll', [BlogController::class, 'deleteAll'])->name('deleteAll.blogs');
         });
     });
 });
