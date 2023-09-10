@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_size', function (Blueprint $table) {
+        Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id')->nullbale();
+            $table->string('rating')->nullable();
+            $table->longText('review')->nullable();
+            $table->string('video')->nullable();
+            $table->longText('image')->nullable();
+            $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->unsignedBigInteger('size_id')->nullbale();
-            $table->foreign('size_id')->references('id')->on('sizes')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_size');
+        Schema::dropIfExists('ratings');
     }
 };

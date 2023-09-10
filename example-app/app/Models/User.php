@@ -53,4 +53,15 @@ class User extends Authenticatable
     public function role(){
         return $this->belongsTo(Role::class);
     }
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
+    public function hasPurchased($productId)
+    {
+        return $this->orders()->where('status','=','Đã giao')
+            ->whereHas('order_details', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })
+            ->exists();
+    }
 }

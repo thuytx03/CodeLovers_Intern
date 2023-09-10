@@ -280,7 +280,23 @@
          });
      });
  </script>
-
+<script>
+    $(document).ready(function() {
+        $('#image').change(function() {
+            $('.image-preview').remove();
+            var files = $('#image')[0].files;
+            for (var i = 0; i < files.length; i++) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var imagePreview = $('<img style="max-width: 200px; border-radius:5px; height:150px; margin:10px">').attr('src', e.target.result).addClass(
+                        'image-preview');
+                    $('.image-container').append(imagePreview);
+                }
+                reader.readAsDataURL(files[i]);
+            }
+        });
+    });
+</script>
 
  </body>
 
