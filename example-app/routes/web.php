@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\InterFaceController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductAttributeController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\RatingController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Admin\UserController;
@@ -47,6 +48,8 @@ Route::get('/chi-tiet-bai-viet/{slug}/{id}', [BlogClientController::class,'detai
 
 Route::get('/chi-tiet-san-pham/{slug}/{id}', [ShopController::class, 'productDetail'])->name('chi-tiet-san-pham');
 Route::get('/vnPayCheck', [CheckoutController::class, 'vnPayCheck'])->name('vnPayCheck');
+Route::get('/ma-giam-gia', [CouponClientController::class, 'index']);
+
 
 Route::get('/home', [ShopController::class, 'index']);
 Route::get('/get-result', [ShopController::class, 'getResult'])->name('get-result');
@@ -226,6 +229,13 @@ Route::middleware('CheckAdmin')->group(function () {
             Route::post('/restore', [BlogController::class, 'restore'])->name('restore.blogs');
             Route::get('/permanentlyDelete/{id}', [BlogController::class, 'permanentlyDelete'])->name('permanentlyDelete.blogs');
             Route::post('/deleteAll', [BlogController::class, 'deleteAll'])->name('deleteAll.blogs');
+        });
+
+        Route::prefix('rating')->group(function () {
+            Route::get('/', [RatingController::class, 'index'])->name('list.rating');
+            Route::get('/destroy/{id}', [RatingController::class, 'destroy'])->name('destroy.rating');
+            Route::post('/deleteAll', [RatingController::class, 'deleteAll'])->name('deleteAll.rating');
+
         });
     });
 });

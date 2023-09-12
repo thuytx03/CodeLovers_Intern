@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Coupon;
+use App\Models\Logo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,21 @@ use Illuminate\Support\Facades\Session;
 
 class CouponClientController extends Controller
 {
+    public function index(){
+        $user = auth()->user();
+        if ($user) {
+            $countCart = Cart::where('user_id', $user->id)->count();
+        } else {
+            $countCart = NULL;
+        }
+        $coupon=Coupon::all();
+        return view('client.coupon.index',[
+            'title'=>'Trang mã giảm giá',
+            'coupon'=>$coupon,
+            'logo' => Logo::find(1),
+            'countCart' => $countCart
+        ]);
+    }
     public function check(Request $request)
     {
         $user = Auth::user();

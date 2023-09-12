@@ -76,7 +76,7 @@ class ShopController extends Controller
             ->where('id', '!=', $product->id) // Loại bỏ sản phẩm chi tiết
             ->get();
 
-        $ratings = Rating::where('product_id', $product->id)->get(); // Lấy bộ sưu tập các đánh giá
+        $ratings = Rating::orderBy('created_at','desc')->where('product_id', $product->id)->get(); // Lấy bộ sưu tập các đánh giá
         $ratingData = []; // Tạo một mảng để chứa tất cả thông tin đánh giá và hình ảnh
 
         foreach ($ratings as $rating) {
