@@ -79,7 +79,7 @@ class CheckoutController extends Controller
 
         if ($request->payment == 'pay_later') {
             // Xóa sản phẩm trong giỏ hàng của người dùng
-            Cart::where('user_id', $user->id)->delete();
+            // Cart::where('user_id', $user->id)->delete();
 
             // Xoá session giảm giá sau khi đặt hàng thành công
             Session::forget('coupon');
@@ -108,7 +108,7 @@ class CheckoutController extends Controller
 
         if ($vnp_ResponseCode != NULL) {
             if ($vnp_ResponseCode == '00') {
-                Cart::where('user_id', $user->id)->delete();
+                // Cart::where('user_id', $user->id)->delete();
 
                 // Xoá session giảm giá sau khi đặt hàng thành công
                 Session::forget('coupon');

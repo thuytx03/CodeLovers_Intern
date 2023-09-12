@@ -104,13 +104,12 @@ class AuthClientController extends Controller
             $user->role_id = 3;
             $user->status = 1;
             $user->save();
-            Alert::success('Thành công', 'Đăng ký tài khoản thành công');
             // Gửi email
             $user->notify(new RegisterMail());
-
+            toastr()->success('Đăng ký tài khoản thành công');
             return redirect()->back();
         } else {
-            Alert::error('Thất bại', 'Đăng ký tài khoản không thành công');
+            toastr()->warning('Đăng ký tài khoản không thành công');
             return redirect()->back()->withErrors([
                 'password' => 'Mật khẩu không trùng khớp'
             ]);

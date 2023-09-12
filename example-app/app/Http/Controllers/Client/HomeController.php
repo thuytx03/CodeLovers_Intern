@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
 use App\Models\Cart;
 use App\Models\Logo;
 use App\Models\Product;
@@ -19,13 +20,14 @@ class HomeController extends Controller
         }else{
             $countCart=NULL;
         }
+        $blog=Blog::orderBy('created_at','desc')->paginate(3);
         return view('client.layouts.main',[
             'title'=>'Trang chủ',
             'logo'=>Logo::find(1),
             'slider'=>Slider::all(),
             'products'=>Product::paginate(16),
-            "countCart" => $countCart
-
+            "countCart" => $countCart,
+            'blog'=>$blog
         ]);
     }
 
