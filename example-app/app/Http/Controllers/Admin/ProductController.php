@@ -20,12 +20,19 @@ use RealRashid\SweetAlert\Facades\Alert;
 class ProductController extends Controller
 {
     public function index()
-    {
-        return view('admin.products.index', [
-            'title' => "Quản lý sản phẩm",
-            'products' => Product::latest()->paginate(5),
-        ]);
-    }
+{
+    $products = Product::latest()->paginate(5);
+
+    // // Lấy danh sách size đã được chọn cho từng sản phẩm
+    // $productSizes = Product_Size::whereIn('product_id', $products->pluck('id'))->get();
+
+    return view('admin.products.index', [
+        'title' => "Quản lý sản phẩm",
+        'products' => $products,
+        // 'productSizes' => $productSizes,
+    ]);
+}
+
     public function create()
     {
         return view('admin.products.add', [
@@ -48,13 +55,13 @@ class ProductController extends Controller
         $product->features = $request->features;
 
         //Xử lý giảm giá
-        if($request->discount_price!=NULL && $request->percent==NULL){
+        if ($request->discount_price != NULL && $request->percent == NULL) {
             $product->discount_price = $request->discount_price;
-        }else if($request->percent!=NULL && $request->discount_price==NULL){
+        } else if ($request->percent != NULL && $request->discount_price == NULL) {
             $product->percent = $request->percent;
-            $percent=$request->selling_price*($request->percent/100);
+            $percent = $request->selling_price * ($request->percent / 100);
             $product->discount_price = $request->selling_price - $percent;
-        }else{
+        } else {
             toastr()->warning('Không thể giảm giá đồng thời hai mục');
             return redirect()->back();
         }
@@ -137,14 +144,14 @@ class ProductController extends Controller
         $product->features = $request->features;
 
         //Xử lý giảm giá
-        if($request->discount_price!=NULL && $request->percent==NULL){
+        if ($request->discount_price != NULL && $request->percent == NULL) {
             $product->discount_price = $request->discount_price;
             $product->percent = NULL;
-        }else if($request->percent!=NULL && $request->discount_price==NULL){
+        } else if ($request->percent != NULL && $request->discount_price == NULL) {
             $product->percent = $request->percent;
-            $percent=$request->selling_price*($request->percent/100);
+            $percent = $request->selling_price * ($request->percent / 100);
             $product->discount_price = $request->selling_price - $percent;
-        }else{
+        } else {
             toastr()->warning('Không thể giảm giá đồng thời hai mục');
             return redirect()->back();
         }

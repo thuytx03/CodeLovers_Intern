@@ -29,5 +29,4 @@ class Product extends Model
     {
         return $this->belongsToMany(Size::class, 'product_size', 'product_id', 'size_id');
     }
-    
 }

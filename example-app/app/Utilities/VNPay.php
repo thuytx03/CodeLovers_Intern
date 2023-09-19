@@ -115,7 +115,7 @@ class VNPay
         $vnp_OrderType = 'Xuan Thuy';
         $vnp_Amount = $data['vnp_Amount'] * 100;
         $vnp_Locale = 'VN';
-        $vnp_BankCode = 'NCB';
+        // $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
 
         $inputData = array(

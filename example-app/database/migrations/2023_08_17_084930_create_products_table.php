@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('discount_price')->nullable();
             $table->integer('quantity');
             $table->longText('description');
-            $table->integer('features')->nullable();
+            $table->string('features')->nullable();
+            $table->string('percent')->nullable();
             $table->integer('like')->nullable();
             $table->integer('status')->nullable();
             $table->integer('view')->nullable();

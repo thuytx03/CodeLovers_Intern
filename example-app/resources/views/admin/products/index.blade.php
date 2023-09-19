@@ -41,6 +41,11 @@
                         <tbody>
                             @foreach ($products as $key => $value)
                                 <tr>
+                                    {{-- <td>
+                                        @foreach ($productSizes->where('product_id', $value->id) as $productSize)
+                                            <li>{{ $productSize->sizes->name }}</li>
+                                        @endforeach
+                                    </td> --}}
                                     <td>
                                         <input type="checkbox" class="form-check-input" name="ids[{{ $value->id }}]"
                                             value="{{ $value->id }}">
