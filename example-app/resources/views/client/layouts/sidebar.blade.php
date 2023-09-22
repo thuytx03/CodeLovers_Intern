@@ -85,9 +85,9 @@
                             </a>
                             <ul class="sub_menu">
                                 <li><a href="index.html">Trang cá nhân</a></li>
-                                @if (Auth::user()->role_id == 1)
-                                    <li><a href="{{ route('dashboard') }}">Trang quản trị</a></li>
-                                @endif
+                                @can('admin-dashboard')
+                                <li><a href="{{ route('dashboard') }}">Trang quản trị</a></li>
+                            @endcan
                                 <li><a href="{{ route('don-hang') }}">Đơn hàng</a></li>
                                 <li><a href="{{ route('logout.client') }}">Đăng xuất</a></li>
                             </ul>
@@ -220,9 +220,10 @@
                             </a>
                             <ul class="sub_menu">
                                 <li><a href="index.html">Trang cá nhân</a></li>
-                                @if (Auth::user()->role_id == 1)
+                                @can('admin-dashboard')
                                     <li><a href="{{ route('dashboard') }}">Trang quản trị</a></li>
-                                @endif
+                                @endcan
+
                                 <li><a href="home-02.html">Đơn hàng</a></li>
                                 <li><a href="{{ route('logout.client') }}">Đăng xuất</a></li>
                             </ul>

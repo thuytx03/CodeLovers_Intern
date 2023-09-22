@@ -19,6 +19,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
 {
+    
+
     public function index()
 {
     $products = Product::latest()->paginate(5);

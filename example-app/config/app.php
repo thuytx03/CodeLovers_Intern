@@ -170,7 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-
+        Spatie\Permission\PermissionServiceProvider::class,
     ])->toArray(),
 
     /*

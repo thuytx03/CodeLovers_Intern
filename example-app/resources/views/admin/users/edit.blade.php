@@ -1,5 +1,6 @@
 @extends('admin.layouts.main')
 @section('content')
+
     <h1>{{ $title }}</h1>
     @if (session('success'))
         <div class="alert alert-primary">
@@ -29,13 +30,16 @@
 
         <div class="form-group mt-2">
             <label for="my-input">Vai trò</label>
-            <select name="role_id" class="form-select" id="">
+            <select name="roles[]" class="form-select" multiple>
                 <option value="">Vui lòng chọn</option>
-                @foreach ($roles as $value)
-                    <option @if($value->id==$users->role_id) selected @endif value="{{ $value->id }}">{{ $value->name }}</option>
+                @foreach ($roles as $role)
+                    <option @if(in_array($role->id, $userRoles)) selected @endif value="{{ $role->id }}">{{ $role->display_name }}</option>
                 @endforeach
             </select>
         </div>
+
+
+
 
         <div class="form-group mt-2">
             <label for="my-input">Số điện thoại</label>

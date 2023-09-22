@@ -71,6 +71,7 @@
             <span class="menu-header-text">Pages</span>
         </li>
 
+        @can('blog-list')
         {{-- Bài viết  --}}
         <li class="menu-item">
             <a href="{{ route('list.blogs') }}" class="menu-link menu-toggle">
@@ -78,26 +79,31 @@
                 <div data-i18n="Misc">Bài viết</div>
             </a>
             <ul class="menu-sub">
+                @can('blog-add')
                 <li class="menu-item">
                     <a href="{{ route('add.blogs') }}" class="menu-link">
                         <div data-i18n="Error">Thêm mới</div>
                     </a>
                 </li>
+                @endcan
                 <li class="menu-item">
                     <a href="{{ route('list.blogs') }}" class="menu-link">
                         <div data-i18n="Under Maintenance">Danh sách</div>
                     </a>
                 </li>
+                @can('type-list')
                 <li class="menu-item">
                     <a href="{{ route('list.types') }}" class="menu-link">
                         <div data-i18n="Under Maintenance">Danh mục</div>
                     </a>
                 </li>
-
+                @endcan
             </ul>
         </li>
         {{-- End bài viết  --}}
+        @endcan
 
+        @can('product-list')
         {{-- Product  --}}
         <li class="menu-item">
             <a href="{{ route('list.product') }}" class="menu-link menu-toggle">
@@ -105,26 +111,31 @@
                 <div data-i18n="Misc">Sản phẩm</div>
             </a>
             <ul class="menu-sub">
+                @can('product-add')
                 <li class="menu-item">
                     <a href="{{ route('create.product') }}" class="menu-link">
                         <div data-i18n="Error">Thêm mới</div>
                     </a>
                 </li>
+                @endcan
                 <li class="menu-item">
                     <a href="{{ route('list.product') }}" class="menu-link">
                         <div data-i18n="Under Maintenance">Danh sách</div>
                     </a>
                 </li>
+                @can('category-list')
                 <li class="menu-item">
                     <a href="{{ route('list.categories') }}" class="menu-link">
                         <div data-i18n="Under Maintenance">Danh mục</div>
                     </a>
                 </li>
-
+                @endcan
             </ul>
         </li>
         {{-- End product  --}}
+        @endcan
 
+        @can('attribute-menu')
         {{-- Attribute  --}}
         <li class="menu-item">
             <a href="{{ route('list.user') }}" class="menu-link menu-toggle">
@@ -132,21 +143,27 @@
                 <div data-i18n="Misc">Thuộc tính sản phẩm</div>
             </a>
             <ul class="menu-sub">
+                @can('color-list')
                 <li class="menu-item">
                     <a href="{{ route('listColor.attributes') }}" class="menu-link">
                         <div data-i18n="Error">Màu sắc</div>
                     </a>
                 </li>
+                @endcan
+
+                @can('size-list')
                 <li class="menu-item">
                     <a href="{{ route('listSize.attributes') }}" class="menu-link">
                         <div data-i18n="Under Maintenance">Kích thước</div>
                     </a>
                 </li>
-
+                @endcan
             </ul>
         </li>
         {{-- End attribute  --}}
+        @endcan
 
+        @can('interface-menu')
         {{-- User interface  --}}
         <li class="menu-item">
             <a href="" class="menu-link menu-toggle">
@@ -154,40 +171,51 @@
                 <div data-i18n="Misc">Giao diện</div>
             </a>
             <ul class="menu-sub">
+                @can('logo-list')
                 <li class="menu-item">
                     <a href="{{ route('logo.interfaces', ['id' => 1]) }}" class="menu-link">
                         <div data-i18n="Error">Logo</div>
                     </a>
                 </li>
+                @endcan
+                @can('slider-list')
                 <li class="menu-item">
                     <a href="{{ route('list.slider') }}" class="menu-link">
                         <div data-i18n="Under Maintenance">Slider</div>
                     </a>
                 </li>
-
+                @endcan
             </ul>
         </li>
+        @endcan
         {{-- Mã giảm giá  --}}
 
+        @can('coupon-list')
         <li class="menu-item">
             <a href="" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bxs-coupon"></i>
                 <div data-i18n="Misc">Mã giảm giá</div>
             </a>
             <ul class="menu-sub">
+                @can('coupon-add')
                 <li class="menu-item">
                     <a href="{{ route('add.coupon') }}" class="menu-link">
                         <div data-i18n="Error">Thêm mới</div>
                     </a>
                 </li>
+                @endcan
+                @can('coupon-list')
                 <li class="menu-item">
                     <a href="{{ route('list.coupon') }}" class="menu-link">
                         <div data-i18n="Error">Danh sách</div>
                     </a>
                 </li>
-
+                @endcan
             </ul>
         </li>
+        @endcan
+
+        @can('order-list')
         {{-- Đơn hàng  --}}
 
         <li class="menu-item">
@@ -205,6 +233,9 @@
 
             </ul>
         </li>
+        @endcan
+
+        @can('contact-list')
         {{-- Liên hệ tự vấn  --}}
         <li class="menu-item">
             <a href="#" class="menu-link menu-toggle">
@@ -220,7 +251,9 @@
             </ul>
         </li>
         {{-- Liên hệ tự vấn  --}}
+        @endcan
 
+        @can('rating-list')
         {{-- Đánh giá sản phẩm --}}
 
         <li class="menu-item">
@@ -238,8 +271,9 @@
 
             </ul>
         </li>
+        @endcan
         {{-- Users  --}}
-        @if (Auth::user()->role_id == 1)
+        @hasrole ('Super-Admin')
             <li class="menu-item">
                 <a href="{{ route('list.user') }}" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-user"></i>
@@ -257,13 +291,63 @@
                         </a>
                     </li>
                     <li class="menu-item">
+                        <a href="{{ route('list.permission') }}" class="menu-link">
+                            <div data-i18n="Under Maintenance">Quyền</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a href="{{ route('list.role') }}" class="menu-link">
                             <div data-i18n="Under Maintenance">Vai trò</div>
                         </a>
                     </li>
                 </ul>
             </li>
-        @endif
+        @endhasrole
         {{-- Users  --}}
+        <li class="menu-item">
+            <a href="" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bxs-message-dots"></i>
+                <div data-i18n="Misc">Đánh giá sản phẩm</div>
+            </a>
+            <ul class="menu-sub">
+
+                <li class="menu-item">
+                    <a href="{{ route('list.rating') }}" class="menu-link">
+                        <div data-i18n="Error">Danh sách</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bxs-message-dots"></i>
+                <div data-i18n="Misc">Đánh giá sản phẩm</div>
+            </a>
+            <ul class="menu-sub">
+
+                <li class="menu-item">
+                    <a href="{{ route('list.rating') }}" class="menu-link">
+                        <div data-i18n="Error">Danh sách</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        <li class="menu-item">
+            <a href="" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bxs-message-dots"></i>
+                <div data-i18n="Misc">Đánh giá sản phẩm</div>
+            </a>
+            <ul class="menu-sub">
+
+                <li class="menu-item">
+                    <a href="{{ route('list.rating') }}" class="menu-link">
+                        <div data-i18n="Error">Danh sách</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
     </ul>
 </aside>
