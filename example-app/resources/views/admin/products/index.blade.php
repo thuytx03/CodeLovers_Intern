@@ -1,13 +1,29 @@
 @extends('admin.layouts.main')
 
 @section('content')
-    <form action="{{ route('deleteAll.product') }}" method="post" id="delete-form">
-        @csrf
+
         <div class="card">
             <div class="card-body">
                 <h1>{{ $title }}</h1>
 
                 <div class="d-flex justify-content-end mt-3 mb-3">
+                    <form class="row " role="search" action="{{ route('list.product') }}" method="get">
+                        <div class="mr10 d-flex">
+                            <select name="status" class="form-select mr10" id="">
+                                <option value="0" {{ (request('status') ?: old('status')) == 0 ? 'selected' : '' }}>Tất cả</option>
+                                <option value="1" {{ (request('status') ?: old('status')) == 1 ? 'selected' : '' }}>Đang hoạt động
+                                </option>
+                                <option value="2" {{ (request('status') ?: old('status')) == 2 ? 'selected' : '' }}>Không hoạt động
+                                </option>
+                            </select>
+
+                            <input class="form-control " name="search" type="search" value="{{ request('search') ?: old('search') }}"
+                                placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success ml10 mr10" type="submit">Search</button>
+                        </div>
+                    </form>
+                    <form action="{{ route('deleteAll.product') }}" method="post" id="delete-form">
+                        @csrf
                     <div class="dropdown">
                         <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">

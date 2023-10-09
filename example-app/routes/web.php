@@ -126,7 +126,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/restore', [UserController::class, 'restore'])->name('restore.user')->middleware('permission:user-trash');
             Route::get('/permanentlyDelete/{id}', [UserController::class, 'permanentlyDelete'])->name('permanentlyDelete.user')->middleware('permission:user-trash');
             Route::post('/deleteAll', [UserController::class, 'deleteAll'])->name('deleteAll.user')->middleware('permission:user-list');
+            Route::post('/update-status/{id}', [UserController::class, 'updateStatus'])->name('updateStatus.user')->middleware('permission:user-edit');
+
         });
+
         // danh mục
         Route::prefix('categories')->group(function () {
             Route::get('/', [CategoryController::class, 'index'])->name('list.categories')->middleware('permission:category-list');

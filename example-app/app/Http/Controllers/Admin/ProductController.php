@@ -19,19 +19,30 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
 {
-    
 
-    public function index()
+
+    public function index(Request $request)
 {
-    $products = Product::latest()->paginate(5);
+    $query = Product::query();
 
-    // // Lấy danh sách size đã được chọn cho từng sản phẩm
-    // $productSizes = Product_Size::whereIn('product_id', $products->pluck('id'))->get();
+    // Tìm kiếm theo name
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where('name', 'like', '%' . $search . '%');
+    }
+    // Lọc theo status
+    if ($request->has('status')) {
+        $status = $request->input('status');
+        if ($status != 0) {
+            $query->where('status', $status);
+        }
+    }
+
+    $products = $query->paginate(5);
 
     return view('admin.products.index', [
         'title' => "Quản lý sản phẩm",
         'products' => $products,
-        // 'productSizes' => $productSizes,
     ]);
 }
 

@@ -21,9 +21,25 @@ class UserController extends Controller
         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
         // $this->middleware('permission:user-trash', ['only' => ['trash']]);
     }
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('id', 'DESC')->paginate(5);
+        $query = User::query();
+
+        // Tìm kiếm theo name
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', '%' . $search . '%');
+        }
+        // Lọc theo status
+        if ($request->has('status')) {
+            $status = $request->input('status');
+            if ($status != 0) {
+                $query->where('status', $status);
+            }
+        }
+
+        $users = $query->orderBy('id', 'DESC')->paginate(8);
+
         return view('admin.users.index', [
             'title' => 'Quản lý tài khoản',
             'users' => $users,
@@ -199,5 +215,18 @@ class UserController extends Controller
         User::onlyTrashed()->where('deleted_at', '<', $thirtyDaysAgo)->forceDelete();
 
         return redirect()->route('list.user')->withSuccess('Đã xoá vĩnh viễn người dùng trong thùng rác');
+    }
+
+    public function updateStatus(Request $request, $id) {
+        $item = User::find($id);
+
+        if (!$item) {
+            return response()->json(['message' => 'Không tìm thấy mục'], 404);
+        }
+        $newStatus = $request->input('status');
+        $item->status = $newStatus;
+        $item->save();
+
+        return response()->json(['message' => 'Cập nhật trạng thái thành công'], 200);
     }
 }
